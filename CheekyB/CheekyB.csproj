@@ -14,4 +14,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common" />
+    <Folder Include="Configuration" />
+    <Folder Include="Constants" />
+    <Folder Include="Endpoints" />
+    <Folder Include="Filters" />
+    <Folder Include="Metadata" />
+  </ItemGroup>
+
 </Project>

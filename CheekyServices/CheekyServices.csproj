@@ -6,4 +6,15 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Configuration" />
+      <Folder Include="Constants" />
+      <Folder Include="Exceptions" />
+      <Folder Include="Implementations" />
+      <Folder Include="Interfaces" />
+      <Folder Include="Mappers" />
+      <Folder Include="Utilities" />
+      <Folder Include="Validators" />
+    </ItemGroup>
+
 </Project>

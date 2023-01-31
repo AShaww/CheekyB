@@ -7,4 +7,12 @@
         <RootNamespace>CheekyDatads</RootNamespace>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Configurations" />
+      <Folder Include="Implementations" />
+      <Folder Include="Interfaces" />
+      <Folder Include="Migrations" />
+      <Folder Include="Models" />
+    </ItemGroup>
+
 </Project>

@@ -1,4 +1,4 @@
-using CheekyDatads;
+using CheekyData;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

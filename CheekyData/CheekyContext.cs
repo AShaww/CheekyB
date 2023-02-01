@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace CheekyDatads;
+namespace CheekyData;
 
 public class CheekyContext : DbContext
 {

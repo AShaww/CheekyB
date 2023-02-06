@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Common" />
     <Folder Include="Configuration" />
     <Folder Include="Filters" />
     <Folder Include="Metadata" />

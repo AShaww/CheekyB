@@ -1,6 +1,6 @@
-﻿namespace CheekyDatads.Models;
+﻿namespace CheekyData.Models;
 
-public class Users
+public class User
 {
     public Guid UserId { get; set; }
     public string FirstName { get; set; }

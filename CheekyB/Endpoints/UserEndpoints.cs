@@ -1,5 +1,7 @@
 ﻿using CheekyB.Constants.EndpointConstants;
 using CheekyModels.Dtos;
+using CheekyServices.Exceptions;
+using CheekyServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CheekyB.Endpoints;

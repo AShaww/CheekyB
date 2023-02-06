@@ -33,6 +33,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CheekyData\CheekyData.csproj" />
     <ProjectReference Include="..\CheekyModels\CheekyModels.csproj" />
+    <ProjectReference Include="..\CheekyServices\CheekyServices.csproj" />
   </ItemGroup>
 
 </Project>

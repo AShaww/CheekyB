@@ -2,6 +2,8 @@
 using CheekyData.Interfaces;
 using CheekyData.Models;
 using CheekyModels.Dtos;
+using CheekyServices.Constants;
+using CheekyServices.Exceptions;
 using CheekyServices.Interfaces;
 
 namespace CheekyServices.Implementations;

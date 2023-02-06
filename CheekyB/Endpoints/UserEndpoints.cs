@@ -115,9 +115,7 @@ public static class UserEndpoints
         try
         {
             var result = await userService.InsertUser(userToAdd);
-            return Results.Created(
-                new Uri($"{context.Request.Scheme}://{context.Request.Host}{context.Request.Path}/{result.UserId}"),
-                result);
+            return Results.Created(new Uri($"{context.Request.Scheme}://{context.Request.Host}{context.Request.Path}/{result.UserId}"),result);
         }
         catch (CheekyExceptions<UserConflictException> ex)
         {

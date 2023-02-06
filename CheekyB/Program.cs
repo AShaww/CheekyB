@@ -71,7 +71,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapGet("/", async context =>
     {
-        await context.Response.WriteAsync($"Welcome to Navy Pottle Api - Environment: {app.Environment.EnvironmentName}");
+        await context.Response.WriteAsync($"Welcome to the Cheekiest Api - Environment: {app.Environment.EnvironmentName}");
     });
 });
 

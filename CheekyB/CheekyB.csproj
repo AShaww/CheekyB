@@ -26,14 +26,13 @@
   <ItemGroup>
     <Folder Include="Common" />
     <Folder Include="Configuration" />
-    <Folder Include="Constants" />
-    <Folder Include="Endpoints" />
     <Folder Include="Filters" />
     <Folder Include="Metadata" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CheekyData\CheekyData.csproj" />
+    <ProjectReference Include="..\CheekyModels\CheekyModels.csproj" />
   </ItemGroup>
 
 </Project>

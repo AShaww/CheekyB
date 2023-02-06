@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using CheekyData.Interfaces;
 using Microsoft.EntityFrameworkCore;
+
 namespace CheekyData.Implementations;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, new()

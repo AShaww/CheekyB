@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using CheekyData.Models;
+
 namespace CheekyData;
 
 public class CheekyContext : DbContext

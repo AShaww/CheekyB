@@ -6,7 +6,7 @@ public class User
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
-    public string GoogleUserId { get; set; }
+    public string? GoogleUserId { get; set; }
     public bool Archived { get; set; }
     public DateTime? LoginDate { get; set; }
     public DateTime? ArchivedOn { get; set; }

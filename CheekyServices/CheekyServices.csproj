@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <Folder Include="Configuration" />
+      <Folder Include="Constants\ErrorConstants" />
       <Folder Include="Mappers" />
       <Folder Include="Utilities" />
       <Folder Include="Validators" />

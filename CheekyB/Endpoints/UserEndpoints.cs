@@ -1,5 +1,6 @@
 ﻿using CheekyB.Common;
 using CheekyB.Constants.EndpointConstants;
+using CheekyB.Filters;
 using CheekyB.Metadata;
 using CheekyModels.Dtos;
 using CheekyServices.Constants;

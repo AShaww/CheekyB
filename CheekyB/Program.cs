@@ -76,3 +76,6 @@ app.UseEndpoints(endpoints =>
 });
 
 app.Run();
+
+// Need for Tests
+public partial class Program { }

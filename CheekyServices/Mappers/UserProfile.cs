@@ -16,7 +16,7 @@ public class UserProfile : Profile
         CreateMap<GoogleUserDto, UserDto>()
             .ForMember(x => x.FirstName, opt =>
                 opt.MapFrom(x => x.GivenName))
-            .ForMember(x => x.Surname, opt =>
+            .ForMember(x => x.LastName, opt =>
                 opt.MapFrom(x => x.FamilyName));
     }
 }

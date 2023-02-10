@@ -52,7 +52,7 @@ public class UserService : IUserService
     public async Task<UserDto> InsertUser(UserDto user)
     {
         ArgumentException.ThrowIfNullOrEmpty(user.FirstName);
-        ArgumentException.ThrowIfNullOrEmpty(user.Surname);
+        ArgumentException.ThrowIfNullOrEmpty(user.LastName);
         ArgumentException.ThrowIfNullOrEmpty(user.Email);
         //does user already exist
         if (await _userRepository.DoesExistInDb(x => x.Email == user.Email))
@@ -78,7 +78,7 @@ public class UserService : IUserService
     public async Task<UserDto> UpdateUser(UserDto user)
     {
         ArgumentException.ThrowIfNullOrEmpty(user.FirstName);
-        ArgumentException.ThrowIfNullOrEmpty(user.Surname);
+        ArgumentException.ThrowIfNullOrEmpty(user.LastName);
         ArgumentException.ThrowIfNullOrEmpty(user.Email);
 
         var userToUpdate = await _userRepository.GetFirstOrDefault(a => a.UserId == user.UserId);

@@ -12,6 +12,7 @@ using Xunit;
 
 namespace CheekyTests.Unit.Service;
 
+[Trait("User Service", "Unit")]
 public class UserServiceTests
 {
     private readonly IMapper _mapperMock;

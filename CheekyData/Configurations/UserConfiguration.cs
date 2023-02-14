@@ -28,7 +28,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         {
             new()
             {
-                UserId =  Guid.NewGuid(),
+                UserId =  Guid.Parse("d51e095b-a8e7-4582-9133-8e0475b5fc04"),
                 FirstName = "Amir",
                 LastName = "Shaw",
                 Email = "AmirShaw@hotmail.co.uk",

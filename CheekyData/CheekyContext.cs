@@ -10,7 +10,8 @@ public class CheekyContext : DbContext
     { }
         
     public DbSet<User> Users { get; set; }
-    
+    public DbSet<ToDo> ToDos { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

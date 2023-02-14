@@ -22,6 +22,71 @@ namespace CheekyData.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CheekyData.Models.ToDo", b =>
+                {
+                    b.Property<Guid>("ToDoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("ToDoDateModified")
+                        .ValueGeneratedOnUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ToDoMessage")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("ToDoTitle")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ToDoId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("ToDo", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            ToDoId = new Guid("fde34b5e-5b1a-46d6-9fe7-b6896cf86517"),
+                            ToDoDateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ToDoMessage = "Well there was one day the ended and the new day started",
+                            ToDoTitle = "Something about something 1",
+                            UserId = new Guid("830e9471-9d6e-4557-8bf5-ec89d375d933")
+                        },
+                        new
+                        {
+                            ToDoId = new Guid("59887cb4-62be-4d64-a7cf-70a608c84d7b"),
+                            ToDoDateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ToDoMessage = "Well there was one day the ended and the new day started",
+                            ToDoTitle = "Something about something 2",
+                            UserId = new Guid("830e9471-9d6e-4557-8bf5-ec89d375d933")
+                        },
+                        new
+                        {
+                            ToDoId = new Guid("f783e4e6-f492-4ecf-8362-fd4834ab37d7"),
+                            ToDoDateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ToDoMessage = "Well there was one day the ended and the new day started",
+                            ToDoTitle = "Something about something 3",
+                            UserId = new Guid("830e9471-9d6e-4557-8bf5-ec89d375d933")
+                        },
+                        new
+                        {
+                            ToDoId = new Guid("5fce3a3a-a421-4830-a49b-f8813d6d4fb9"),
+                            ToDoDateModified = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ToDoMessage = "Well there was one day the ended and the new day started",
+                            ToDoTitle = "Something about something",
+                            UserId = new Guid("830e9471-9d6e-4557-8bf5-ec89d375d933")
+                        });
+                });
+
             modelBuilder.Entity("CheekyData.Models.User", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -78,7 +143,7 @@ namespace CheekyData.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = new Guid("895ec0fc-252d-4df5-8377-00b9a577c906"),
+                            UserId = new Guid("d51e095b-a8e7-4582-9133-8e0475b5fc04"),
                             Archived = false,
                             CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "AmirShaw@hotmail.co.uk",
@@ -86,6 +151,22 @@ namespace CheekyData.Migrations
                             LastName = "Shaw",
                             ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
+                });
+
+            modelBuilder.Entity("CheekyData.Models.ToDo", b =>
+                {
+                    b.HasOne("CheekyData.Models.User", "User")
+                        .WithOne("ToDos")
+                        .HasForeignKey("CheekyData.Models.ToDo", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CheekyData.Models.User", b =>
+                {
+                    b.Navigation("ToDos");
                 });
 #pragma warning restore 612, 618
         }

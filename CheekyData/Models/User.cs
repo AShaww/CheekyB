@@ -13,5 +13,5 @@ public class User
     public DateTime CreatedOn { get; set; }
     public DateTime ModifiedOn { get; set; }
     
-    public virtual ToDo? ToDos { get; set; }
+    public virtual IEnumerable<ToDo>? ToDos { get; set; }
 }

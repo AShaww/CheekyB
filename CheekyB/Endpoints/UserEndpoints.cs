@@ -9,7 +9,7 @@ using CheekyServices.Exceptions;
 using CheekyServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-[assembly: InternalsVisibleTo("NavyPottleTests")]
+[assembly: InternalsVisibleTo("CheekyTests")]
 
 namespace CheekyB.Endpoints;
 

@@ -12,5 +12,7 @@ public static class ServiceCollectionExtension
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IToDoRepository, ToDoRepository>();
+        services.AddScoped<IToDoService, ToDoService>();
     }
 }

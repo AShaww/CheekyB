@@ -12,6 +12,7 @@ builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
 {
     config.Sources.Clear();
     var env = hostingContext.HostingEnvironment;
+    
     config.SetBasePath(env.ContentRootPath)
         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true) //load base settings
         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true) //load environment settings
@@ -63,6 +64,9 @@ app.UseRouting();
 app.MapGroup("api/User")
     .MapUserEndpoints()
     .WithTags("User");
+app.MapGroup("api/ToDo")
+    .MapToDoEndpoints()
+    .WithTags("ToDo");
 
 app.UseAuthentication();
 app.UseAuthorization();

@@ -23,18 +23,19 @@ public class ToDoService : IToDoService
     }
 
 
-    public async Task<ToDoDto> GetTodoByUserId(Guid userId)
+    public async Task<IEnumerable<ToDoDto>> GetTodoByUserId(Guid userId)
     {
-        var response = await _toDoRepository.GetFirstOrDefault(a => a.UserId == userId);
+        var response = await _toDoRepository.GetAllAsync(a => a.UserId == userId);
+        
         if (response == null)
         {
             throw new CheekyExceptions<ToDoNotFoundException>("The ToDo with the specified ID does not exist.");
         }
 
-        var todo = _mapper.Map<ToDoDto>(response);
+        //var todo = _mapper.Map<ToDo>(response);
         var user = await _userRepository.GetFirstOrDefault(a => a.UserId == userId);
 
-        return _mapper.Map<ToDoDto>(todo);
+        return _mapper.Map<IEnumerable<ToDoDto>>(response);
     }
     
     public async Task<ToDoDto> InsertTodo(ToDoDto toDoToInsert)

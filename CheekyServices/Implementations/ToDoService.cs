@@ -23,9 +23,9 @@ public class ToDoService : IToDoService
     }
 
 
-    public async Task<IEnumerable<ToDoDto>> GetTodoByUserId(Guid userId)
+    public async Task<IEnumerable<ToDoDto>> GetTodoByUserId(Guid toDoId)
     {
-        var response = await _toDoRepository.GetAllAsync(a => a.UserId == userId);
+        var response = await _toDoRepository.GetAllAsync(a => a.ToDoId == toDoId);
         
         if (response == null)
         {
@@ -33,11 +33,17 @@ public class ToDoService : IToDoService
         }
 
         //var todo = _mapper.Map<ToDo>(response);
-        var user = await _userRepository.GetFirstOrDefault(a => a.UserId == userId);
+        //var user = await _userRepository.GetFirstOrDefault(a => a.UserId == userId);
 
         return _mapper.Map<IEnumerable<ToDoDto>>(response);
     }
-    
+
+    public async Task<IEnumerable<ToDoDto>> GetAllToDos(int pageNumber, int pageSize)
+    {
+        var users = await _toDoRepository.GetAllToDoAsync(x => !x.User.Archived, pageNumber, pageSize);
+        return _mapper.Map<IEnumerable<ToDoDto>>(users);
+    }
+
     public async Task<ToDoDto> InsertTodo(ToDoDto toDoToInsert)
     {
         var toDoToAdd = _mapper.Map<ToDo>(toDoToInsert);

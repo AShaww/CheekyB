@@ -19,17 +19,23 @@ public static class ToDoEndpoints
 {
     public static RouteGroupBuilder MapToDoEndpoints(this RouteGroupBuilder group)
     {
-        group.MapGet("/{userId:Guid}", GetToDoByUserId)
-            .WithName(ToDoEndpointConstants.GetToDoByUserIdWithName)
+        group.MapGet("/{toDoId:Guid}", GetToDoByToDoId)
+            .WithName(ToDoEndpointConstants.GetToDoByToDoIdWithName)
             .Produces<ToDoDto>()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status500InternalServerError);
  
+        group.MapGet("/", GetAllToDos)
+            .WithName(ToDoEndpointConstants.GetAllToDosWithName)
+            .Produces<IEnumerable<ToDoDto>>()
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status500InternalServerError);
+
+        
         group.MapPost("/", InsertToDo)
             .WithName(ToDoEndpointConstants.InsertToDoWithName)
             .Accepts<ToDoDto>("application/json")
-            .AddEndpointFilter<ValidationFilter<ToDoDto>>()
             .Produces(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
@@ -47,11 +53,24 @@ public static class ToDoEndpoints
         
         return group;
     }
-     internal static async Task<IResult> GetToDoByUserId([FromServices] IToDoService toDoService, Guid userId)
+    public static async Task<IResult> GetAllToDos([FromServices] IToDoService toDoService, int pageNumber, int pageSize)
+    {
+        try
+        {
+            var toDos = await toDoService.GetAllToDos(pageNumber, pageSize);
+
+            return Results.Ok(toDos);
+        }
+        catch (Exception ex)
+        {
+            return CommonMethods.ErrorResponseSelector(ex, ex.Message);
+        }
+    }
+     internal static async Task<IResult> GetToDoByToDoId([FromServices] IToDoService toDoService, Guid toDoId)
         {
             try
             {
-                var toDo = await toDoService.GetTodoByUserId(userId);
+                var toDo = await toDoService.GetTodoByUserId(toDoId);
 
                 return Results.Ok(toDo);
             }

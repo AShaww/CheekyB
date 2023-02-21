@@ -8,4 +8,5 @@ public interface IToDoService
     Task<IEnumerable<ToDoDto>> GetAllToDos();
     Task<ToDoDto> InsertTodo(ToDoDto toDoToInsert);
     Task<ToDoDto> UpdateTodo(ToDoDto todo);
+    Task<ToDoDto> DeleteTodo(Guid toDoId);
 }

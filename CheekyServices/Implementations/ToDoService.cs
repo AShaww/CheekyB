@@ -73,4 +73,17 @@ public class ToDoService : IToDoService
 
         return todo;
     }
+
+    public async Task<ToDoDto> DeleteTodo(Guid toDoId)
+    {
+        var toDoToDelete = await _toDoRepository.GetFirstOrDefault(a => a.ToDoId == toDoId);
+        if (toDoToDelete == null)
+        {
+            throw new CheekyExceptions<ToDoNotFoundException>(ToDoExceptionMessages.ToDoNotFoundExceptionMessage);
+        }
+
+        await _toDoRepository.DeleteAsync(toDoToDelete);
+        return _mapper.Map<ToDoDto>(toDoToDelete);
+    }
+
 }

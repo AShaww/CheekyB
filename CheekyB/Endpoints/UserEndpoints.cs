@@ -1,4 +1,5 @@
-﻿using CheekyB.Common;
+﻿using System.Runtime.CompilerServices;
+using CheekyB.Common;
 using CheekyB.Constants.EndpointConstants;
 using CheekyB.Filters;
 using CheekyB.Metadata;
@@ -7,6 +8,8 @@ using CheekyServices.Constants;
 using CheekyServices.Exceptions;
 using CheekyServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+
+[assembly: InternalsVisibleTo("CheekyTests")]
 
 namespace CheekyB.Endpoints;
 
@@ -66,7 +69,7 @@ public static class UserEndpoints
     /// <param name="pageSize"></param>
     /// <param name="pageNumber"></param>
     /// <returns></returns>
-    internal static async Task<IResult> GetAllUsers([FromServices] IUserService userService, int pageNumber, int pageSize)
+    public static async Task<IResult> GetAllUsers([FromServices] IUserService userService, int pageNumber, int pageSize)
     {
         try
         {
@@ -88,7 +91,7 @@ public static class UserEndpoints
     /// <param name="userService"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    internal static async Task<IResult> GetUserById([FromServices] IUserService userService, Guid userId)
+    public static async Task<IResult> GetUserById([FromServices] IUserService userService, Guid userId)
     {
         try
         {
@@ -115,7 +118,7 @@ public static class UserEndpoints
     /// <param name="userService"></param>
     /// <param name="userToAdd"></param>
     /// <returns></returns>
-    internal static async Task<IResult> InsertUser(HttpContext context, [FromServices] IUserService userService,
+    public static async Task<IResult> InsertUser(HttpContext context, [FromServices] IUserService userService,
         [FromBody] UserDto userToAdd)
     {
         try
@@ -139,7 +142,7 @@ public static class UserEndpoints
     /// <param name="userService"></param>
     /// <param name="userToUpdate"></param>
     /// <returns></returns>
-    internal static async Task<IResult> UpdateUser([FromServices] IUserService userService,
+    public static async Task<IResult> UpdateUser([FromServices] IUserService userService,
         [FromBody] UserDto userToUpdate)
     {
         try
@@ -168,7 +171,7 @@ public static class UserEndpoints
     /// <param name="userService"></param>
     /// <param name="userId"></param>
     /// <returns></returns>
-    internal static async Task<IResult> DeleteUser([FromServices] IUserService userService, Guid userId)
+    public static async Task<IResult> DeleteUser([FromServices] IUserService userService, Guid userId)
     {
         try
         {

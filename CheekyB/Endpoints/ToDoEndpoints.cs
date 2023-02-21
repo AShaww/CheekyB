@@ -4,7 +4,6 @@ using CheekyB.Common;
 using CheekyB.Constants.EndpointConstants;
 using CheekyB.Filters;
 using CheekyB.Metadata;
-using CheekyData.Models;
 using CheekyModels.Dtos;
 using CheekyServices.Constants;
 using CheekyServices.Exceptions;
@@ -53,11 +52,11 @@ public static class ToDoEndpoints
         
         return group;
     }
-    public static async Task<IResult> GetAllToDos([FromServices] IToDoService toDoService, int pageNumber, int pageSize)
+    public static async Task<IResult> GetAllToDos([FromServices] IToDoService toDoService)
     {
         try
         {
-            var toDos = await toDoService.GetAllToDos(pageNumber, pageSize);
+            var toDos = await toDoService.GetAllToDos();
 
             return Results.Ok(toDos);
         }

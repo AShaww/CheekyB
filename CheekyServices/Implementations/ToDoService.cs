@@ -38,9 +38,9 @@ public class ToDoService : IToDoService
         return _mapper.Map<IEnumerable<ToDoDto>>(response);
     }
 
-    public async Task<IEnumerable<ToDoDto>> GetAllToDos(int pageNumber, int pageSize)
+    public async Task<IEnumerable<ToDoDto>> GetAllToDos()
     {
-        var users = await _toDoRepository.GetAllToDoAsync(x => !x.User.Archived, pageNumber, pageSize);
+        var users = await _toDoRepository.GetAllToDoAsync();
         return _mapper.Map<IEnumerable<ToDoDto>>(users);
     }
 

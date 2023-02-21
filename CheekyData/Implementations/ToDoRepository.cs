@@ -17,15 +17,9 @@ public class ToDoRepository : Repository<ToDo>, IToDoRepository
         return result;
     }
 
-    public async Task<IEnumerable<ToDo>> GetAllToDoAsync(Expression<Func<ToDo, bool>> predicate, int pageNumber, int pageSize)
+    public async Task<IEnumerable<ToDo>> GetAllToDoAsync()
     {
-        var pagedData = await _cheekyContext.ToDos
-            .Where(predicate)
-            .Skip((pageNumber - 1) * pageSize)
-            .Take(pageSize)
-            .ToListAsync();
-
-        return pagedData;
+        return await _cheekyContext.ToDos.ToListAsync();
     }
     
 }

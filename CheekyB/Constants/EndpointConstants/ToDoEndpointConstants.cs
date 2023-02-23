@@ -2,8 +2,9 @@
 
 public class ToDoEndpointConstants
 {
-    public const string GetToDoByToDoIdWithName = "Get ToDo By ToDo Id";
-    public const string GetAllToDosWithName = "Get All ToDo";
-    public const string InsertToDoWithName = "Create ToDo";
-    public const string UpdateToDoWithName = "Update ToDo";
+    public const string GetToDoByToDoId = "Get ToDo By ToDo Id";
+    public const string GetAllToDos = "Get All ToDo";
+    public const string DeleteToDo = "Delete All ToDo";
+    public const string InsertToDo = "Create ToDo";
+    public const string UpdateToDo = "Update ToDo";
 }

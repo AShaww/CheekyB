@@ -36,6 +36,7 @@ public static class ToDoEndpoints
         group.MapPost("/", InsertToDo)
             .WithName(ToDoEndpointConstants.InsertToDo)
             .Accepts<ToDoDto>("application/json")
+            .AddEndpointFilter<ValidationFilter<ToDoDto>>()
             .Produces(StatusCodes.Status201Created)
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
@@ -92,15 +93,14 @@ public static class ToDoEndpoints
         }
     }
 
-    internal static async Task<IResult> InsertToDo(IMapper mapper, HttpContext context,
-        [FromServices] IToDoService toDoService, ToDoDto toDoToAdd)
+    internal static async Task<IResult> InsertToDo([FromServices] IToDoService toDoService, IMapper mapper, HttpContext context, ToDoDto toDoToAdd)
     {
         try
         {
             var result = await toDoService.InsertTodo(toDoToAdd);
 
-            return Results.Created(new Uri($"{context.Request.Scheme}://" +
-                                           $"{context.Request.Host}{context.Request.Path}/{result.ToDoId}"), result);
+            return Results.Created(new Uri($"{context.Request.Scheme}://" + $"{context.Request.Host}{context.Request.Path}/{result.ToDoId}"), result);
+                                          
         }
         catch (CheekyExceptions<ToDoConflictException> ex)
         {

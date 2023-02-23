@@ -22,7 +22,6 @@ public class ToDoService : IToDoService
         _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
     }
 
-
     public async Task<IEnumerable<ToDoDto>> GetTodoByUserId(Guid toDoId)
     {
         var response = await _toDoRepository.GetAllAsync(a => a.ToDoId == toDoId);
@@ -44,19 +43,32 @@ public class ToDoService : IToDoService
         return _mapper.Map<IEnumerable<ToDoDto>>(users);
     }
 
-    public async Task<ToDoDto> InsertTodo(ToDoDto toDoToInsert)
+    public async Task<ToDoDto> InsertTodo(ToDoDto todo)
     {
-        var toDoToAdd = _mapper.Map<ToDo>(toDoToInsert);
-      
-        if (await _toDoRepository.DoesExistInDb(x => x.ToDoId == toDoToInsert.ToDoId))
+        ArgumentException.ThrowIfNullOrEmpty(todo.ToDoTitle);
+        ArgumentException.ThrowIfNullOrEmpty(todo.ToDoMessage);
+        
+        if (await _toDoRepository.DoesExistInDb(x => x.ToDoId == todo.ToDoId))
         {
             throw new CheekyExceptions<ToDoNotFoundException>(ToDoExceptionMessages.ToDoDuplicateExceptionMessage);
         }
-        
-        var insertedToDo = await _toDoRepository.AddAsync(toDoToAdd);
-        toDoToInsert = _mapper.Map<ToDoDto>(insertedToDo);
-        
-        return toDoToInsert;
+
+        try
+        {
+            var toDoToAdd = _mapper.Map<ToDo>(todo);
+            toDoToAdd.UserId = todo.UserId;
+            toDoToAdd.ToDoId = new Guid();
+            var addedToDo = await _toDoRepository.AddAsync(toDoToAdd);
+            todo = _mapper.Map<ToDoDto>(addedToDo);
+
+            return todo;
+        }
+        catch (Exception ex)
+        {
+            var text = ex;
+            
+        }
+        return default;
     }
 
     public async Task<ToDoDto> UpdateTodo(ToDoDto todo)

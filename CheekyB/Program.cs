@@ -2,6 +2,8 @@ using System.Text.Json.Serialization;
 using CheekyB.Configuration;
 using CheekyB.Endpoints;
 using CheekyData;
+using CheekyServices.Validators;
+using FluentValidation;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,6 +40,7 @@ builder.Services.AddDbContext<CheekyContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDomainServices();
+builder.Services.AddValidatorsFromAssemblyContaining<ToDoValidator>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddCors();
 

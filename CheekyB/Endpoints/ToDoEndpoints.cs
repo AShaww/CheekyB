@@ -25,13 +25,12 @@ public static class ToDoEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status500InternalServerError);
-
+            
         group.MapGet("/", GetAllToDos)
             .WithName(ToDoEndpointConstants.GetAllToDos)
             .Produces<IEnumerable<ToDoDto>>()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError);
-
 
         group.MapPost("/", InsertToDo)
             .WithName(ToDoEndpointConstants.InsertToDo)

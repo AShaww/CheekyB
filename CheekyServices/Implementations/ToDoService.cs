@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.Design;
-using AutoMapper;
+﻿using AutoMapper;
 using CheekyData.Interfaces;
 using CheekyData.Models;
 using CheekyModels.Dtos;

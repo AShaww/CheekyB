@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using CheekyData.Interfaces;
+﻿using CheekyData.Interfaces;
 using CheekyData.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,5 +20,4 @@ public class ToDoRepository : Repository<ToDo>, IToDoRepository
     {
         return await _cheekyContext.ToDos.ToListAsync();
     }
-    
 }

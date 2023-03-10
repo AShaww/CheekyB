@@ -1,4 +1,5 @@
-﻿using CheekyModels.Dtos;
+﻿using CheekyData.Models;
+using CheekyModels.Dtos;
 
 namespace CheekyServices.Interfaces;
 

@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.Json.Serialization;
 using CheekyB.Configuration;
 using CheekyB.Endpoints;
@@ -6,6 +7,11 @@ using CheekyServices.Validators;
 using FluentValidation;
 using Microsoft.AspNetCore.Http.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.OpenApi.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,7 +33,57 @@ builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
     }
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddCookie()
+    .AddGoogle(options =>
+    {
+        options.ClientId = builder.Configuration["GoogleAuthentication:ClientId"];
+        options.ClientSecret = builder.Configuration["GoogleAuthentication:ClientSecret"];
+    }).AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateActor = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["JWTConfiguration:Issuer"],
+            ValidAudience = builder.Configuration["JWTConfiguration:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTConfiguration:Key"]))
+        };
+    });
+
+builder.Services.AddAuthorization(opt =>
+{
+    opt.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer",
+        new OpenApiSecurityScheme
+        {
+            Scheme = "Bearer",
+            BearerFormat = "JWT",
+            In = ParameterLocation.Header,
+            Name = "Authorization",
+            Description = "Bearer Authentication with JWT Token",
+            Type = SecuritySchemeType.Http
+        });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference { Id = "Bearer", Type = ReferenceType.SecurityScheme }
+            },
+            new List<string>()
+        }
+    });
+});
 
 builder.Services.Configure<JsonOptions>(opt =>
 {
@@ -40,8 +96,9 @@ builder.Services.AddDbContext<CheekyContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDomainServices();
-builder.Services.AddValidatorsFromAssemblyContaining<ToDoValidator>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddValidatorsFromAssemblyContaining<ToDoValidator>();
+builder.Services.ConfigOptions(builder.Configuration);
 builder.Services.AddCors();
 
 var app = builder.Build();
@@ -67,12 +124,15 @@ app.UseRouting();
 app.MapGroup("api/User")
     .MapUserEndpoints()
     .WithTags("User");
+
 app.MapGroup("api/ToDo")
     .MapToDoEndpoints()
     .WithTags("ToDo");
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapAuthEndpoints();
 
 app.UseEndpoints(endpoints =>
 {

@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using CheekyData.Models;
 using CheekyModels.Dtos;
+using Google.Apis.Auth;
 
 namespace CheekyServices.Mappers;
 
-/// <summary>
-/// Mapper for dealing with User data entry 
-/// </summary>
 public class UserProfile : Profile
 {
     public UserProfile()
@@ -18,5 +16,9 @@ public class UserProfile : Profile
                 opt.MapFrom(x => x.GivenName))
             .ForMember(x => x.LastName, opt =>
                 opt.MapFrom(x => x.FamilyName));
+        
+        CreateMap<GoogleJsonWebSignature.Payload, GoogleUserDto>()
+            .ForMember(x => x.GoogleUserId, opt => opt.MapFrom(s => s.Subject))
+            .ForMember(x => x.FullName, opt => opt.MapFrom(s => s.Name));
     }
 }

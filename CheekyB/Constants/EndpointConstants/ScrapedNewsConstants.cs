@@ -1,7 +1,8 @@
-﻿namespace CheekyB.Constants.EndpointConstants;
-
-public class ScrapedNewsConstants
+﻿namespace CheekyB.Constants.EndpointConstants
 {
-    public const string GetAllScrapedNews = "Get All Scraped News";
-    public const string DeleteScrapedNews = "Delete Specific Scraped News";
+    public class ScrapedNewsConstants
+    {
+        public const string GetAllScrapedNews = "Get All Scraped News";
+        public const string DeleteScrapedNews = "Delete Specific Scraped News";
+    }
 }

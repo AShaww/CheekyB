@@ -57,6 +57,7 @@ public static class ToDoEndpoints
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status404NotFound)
             .Produces(StatusCodes.Status500InternalServerError);
+        
         return group;
     }
 

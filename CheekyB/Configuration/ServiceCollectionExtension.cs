@@ -16,6 +16,8 @@ public static class ServiceCollectionExtension
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IToDoRepository, ToDoRepository>();
         services.AddScoped<IToDoService, ToDoService>();
+        services.AddScoped<IScrapedNewsRepository, ScrapedNewsRepository>();
+        services.AddScoped<IScrapedNewsService, ScrapedNewsService>();
         services.AddSingleton<IUserJwtGenerator, UserJwtGenerator>();
         services.AddScoped<IAuthService, AuthService>();
     }

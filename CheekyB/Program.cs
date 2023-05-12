@@ -2,6 +2,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using CheekyB.Configuration;
 using CheekyB.Endpoints;
+using CheekyB.Extensions;
 using CheekyData;
 using CheekyServices.Validators;
 using FluentValidation;
@@ -11,9 +12,12 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
-
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add Serilog
+builder.AddSerilog();
 
 // Add configurations
 builder.Host.ConfigureAppConfiguration((hostingContext, config) =>
@@ -102,6 +106,8 @@ builder.Services.ConfigOptions(builder.Configuration);
 builder.Services.AddCors();
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 app.UseCors(x => x
     .AllowAnyMethod()

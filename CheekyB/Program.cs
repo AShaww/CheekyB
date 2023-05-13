@@ -138,9 +138,9 @@ app.MapGroup("api/ToDo")
     .MapToDoEndpoints()
     .WithTags("ToDo");
 
-// app.MapGroup("api/ScrapedNews")
-//     .MapScrapedNewsEndpoints()
-//     .WithTags("ScrapedNews");
+app.MapGroup("api/ScrapedNews")
+    .MapScrapedNewsEndpoints()
+    .WithTags("ScrapedNews");
 
 app.UseAuthentication();
 app.UseAuthorization();

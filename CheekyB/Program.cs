@@ -1,17 +1,19 @@
+using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
+using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Json;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using CheekyB.Configuration;
 using CheekyB.Endpoints;
 using CheekyB.Extensions;
 using CheekyData;
 using CheekyServices.Validators;
-using FluentValidation;
-using Microsoft.AspNetCore.Http.Json;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.OpenApi.Models;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -104,6 +106,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddValidatorsFromAssemblyContaining<ToDoValidator>();
 builder.Services.ConfigOptions(builder.Configuration);
 builder.Services.AddCors();
+
 
 var app = builder.Build();
 

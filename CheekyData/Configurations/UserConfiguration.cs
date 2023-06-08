@@ -1,4 +1,4 @@
-﻿using CheekyData.Models;
+﻿using CheekyModels.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -9,6 +9,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
     public void Configure(EntityTypeBuilder<User> builder)
     {
         builder.HasKey(g => g.UserId);
+        
         builder.Property(p => p.GoogleUserId).HasMaxLength(255);
         builder.Property(p => p.UserId).ValueGeneratedOnAdd();
         builder.Property(p => p.FirstName).HasMaxLength(50).IsRequired();
@@ -18,6 +19,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(p => p.Archived).HasDefaultValue(false);
         builder.Property(p => p.CreatedOn).HasDefaultValueSql("getutcdate()");
         builder.Property(p => p.ModifiedOn).HasDefaultValueSql("getutcdate()");
+        
+        builder.HasMany(u => u.TrainedSkills)
+                    .WithOne(ts => ts.User)
+                    .HasForeignKey(ts => ts.UserId);
         
         builder.ToTable("User").HasData(UserSeed());
     }

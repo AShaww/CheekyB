@@ -1,5 +1,5 @@
 ﻿using CheekyData.Interfaces;
-using CheekyData.Models;
+using CheekyModels.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CheekyData.Implementations;

@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CheekyB.Endpoints;
 
-
 public static class ScrapedNewsEndpoints
 {
     public static RouteGroupBuilder MapScrapedNewsEndpoints(this RouteGroupBuilder group)

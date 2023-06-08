@@ -26,4 +26,8 @@
       </PackageReference>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\CheekyModels\CheekyModels.csproj" />
+    </ItemGroup>
+
 </Project>

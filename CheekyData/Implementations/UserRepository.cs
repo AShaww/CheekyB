@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
 using CheekyData.Interfaces;
-using CheekyData.Models;
+using CheekyModels.Entities;
 
 namespace CheekyData.Implementations;
 

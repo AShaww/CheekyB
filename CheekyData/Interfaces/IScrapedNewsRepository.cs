@@ -1,4 +1,4 @@
-﻿using CheekyData.Models;
+﻿using CheekyModels.Entities;
 
 namespace CheekyData.Interfaces;
 

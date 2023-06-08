@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using CheekyData.Interfaces;
-using CheekyData.Models;
+using CheekyModels.Entities;
 using CheekyTests.Unit.Helper;
 using Moq;
 using Xunit;

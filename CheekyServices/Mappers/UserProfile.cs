@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using CheekyData.Models;
 using CheekyModels.Dtos;
+using CheekyModels.Entities;
 using Google.Apis.Auth;
 
 namespace CheekyServices.Mappers;
@@ -11,6 +11,10 @@ public class UserProfile : Profile
     {
         CreateMap<User, UserDto>().ReverseMap();
 
+        CreateMap<TrainedSkill, TrainedSkillDto>().ReverseMap();
+        CreateMap<CoreSkill, CoreSkillDto>().ReverseMap();
+        CreateMap<SkillType, SkillTypeDto>().ReverseMap();
+        
         CreateMap<GoogleUserDto, UserDto>()
             .ForMember(x => x.FirstName, opt =>
                 opt.MapFrom(x => x.GivenName))

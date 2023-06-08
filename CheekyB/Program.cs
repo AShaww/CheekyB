@@ -1,5 +1,4 @@
-using System;
-using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using System.Text.Json.Serialization;
 using FluentValidation;
@@ -14,6 +13,7 @@ using CheekyB.Endpoints;
 using CheekyB.Extensions;
 using CheekyData;
 using CheekyServices.Validators;
+using Microsoft.AspNetCore.Diagnostics;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -107,7 +107,6 @@ builder.Services.AddValidatorsFromAssemblyContaining<ToDoValidator>();
 builder.Services.ConfigOptions(builder.Configuration);
 builder.Services.AddCors();
 
-
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
@@ -126,6 +125,28 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseStatusCodePages(async context =>
+{
+    var response = context.HttpContext.Response;
+
+    if (response.StatusCode == (int)HttpStatusCode.Unauthorized)
+    {
+        await response.WriteAsJsonAsync(new { error = "Unauthorized" });
+    }
+});
+
+app.UseExceptionHandler(c => c.Run(async context =>
+{
+    var exception = context.Features
+        .Get<IExceptionHandlerPathFeature>()
+        ?.Error;
+    if (exception is SecurityTokenExpiredException)
+    {
+        context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+        await context.Response.WriteAsJsonAsync(new { error = "Unauthorized" });
+    }
+}));
+
 app.UseHttpsRedirection();
 
 app.UseRouting();
@@ -142,18 +163,35 @@ app.MapGroup("api/ScrapedNews")
     .MapScrapedNewsEndpoints()
     .WithTags("ScrapedNews");
 
+app.MapGroup("api/CoreSkill")
+    .MapCoreSkillEndpoints()
+    .WithTags("Core Skill");
+
+app.MapGroup("api/TrainedSkill")
+    .MapTrainedSkillEndpoints()
+    .WithTags("Trained Skill");
+
+app.MapGroup("api/SkillType")
+    .MapSkillTypeEndpoints()
+    .WithTags("Skill Type");
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapAuthEndpoints();
 
-app.UseEndpoints(endpoints =>
+app.MapGet("/", async context =>
 {
-    endpoints.MapGet("/", async context =>
-    {
-        await context.Response.WriteAsync($"Welcome to the Cheekiest Api - Environment: {app.Environment.EnvironmentName}");
-    });
+    await context.Response.WriteAsync($"Welcome to the Cheekiest Api - Environment: {app.Environment.EnvironmentName}");
 });
+
+// app.UseEndpoints(endpoints =>
+// {
+//     endpoints.MapGet("/", async context =>
+//     {
+//         await context.Response.WriteAsync($"Welcome to the Cheekiest Api - Environment: {app.Environment.EnvironmentName}");
+//     });
+// });
 
 app.Run();
 

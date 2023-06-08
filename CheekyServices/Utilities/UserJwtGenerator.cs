@@ -16,7 +16,12 @@ public class UserJwtGenerator : IUserJwtGenerator
     {
         _jwtConfig = jwtConfig;
     }
-
+    public bool IsTokenExpired(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+        return jwtToken.ValidTo <= DateTime.UtcNow;
+    }
     public string GenerateToken(UserDto user)
     {
         var claims = new[]
@@ -31,7 +36,7 @@ public class UserJwtGenerator : IUserJwtGenerator
             issuer: _jwtConfig.Issuer,
             audience: _jwtConfig.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddDays(30),
+            expires: DateTime.UtcNow.AddMinutes(2),
             notBefore: DateTime.UtcNow,
             signingCredentials: new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key)),

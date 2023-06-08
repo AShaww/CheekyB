@@ -1,5 +1,5 @@
 ﻿using CheekyData.Interfaces;
-using CheekyData.Models;
+using CheekyModels.Entities;
 using CheekyModels.Dtos;
 using CheekyTests.Unit.Common;
 using CheekyTests.Unit.Helper;

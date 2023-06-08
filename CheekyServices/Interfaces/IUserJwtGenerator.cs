@@ -11,5 +11,6 @@ namespace CheekyServices.Interfaces
      /// <param name="user">A UserDto user from which to take information and construct a JWT token</param>
      /// <returns></returns>
         string GenerateToken(UserDto user);
+     bool IsTokenExpired(string token);
     }
 }

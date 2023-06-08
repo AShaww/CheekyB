@@ -10,10 +10,6 @@ public class UserProfile : Profile
     public UserProfile()
     {
         CreateMap<User, UserDto>().ReverseMap();
-
-        CreateMap<TrainedSkill, TrainedSkillDto>().ReverseMap();
-        CreateMap<CoreSkill, CoreSkillDto>().ReverseMap();
-        CreateMap<SkillType, SkillTypeDto>().ReverseMap();
         
         CreateMap<GoogleUserDto, UserDto>()
             .ForMember(x => x.FirstName, opt =>

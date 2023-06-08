@@ -1,4 +1,4 @@
-﻿namespace CheekyServices.Constants;
+﻿namespace CheekyServices.Constants.ExceptionMessageConstants;
 
 public class ToDoExceptionMessages
 {

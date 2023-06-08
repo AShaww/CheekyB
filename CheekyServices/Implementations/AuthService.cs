@@ -1,5 +1,4 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using AutoMapper;
+﻿using AutoMapper;
 using CheekyModels.Dtos;
 using CheekyServices.Configuration;
 using CheekyServices.Interfaces;
@@ -52,5 +51,5 @@ namespace CheekyServices.Implementations;
             }
         }
         #endregion
-
-}
+        
+    }

@@ -36,7 +36,7 @@ public class UserJwtGenerator : IUserJwtGenerator
             issuer: _jwtConfig.Issuer,
             audience: _jwtConfig.Audience,
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(2),
+            expires: DateTime.UtcNow.AddDays(7),
             notBefore: DateTime.UtcNow,
             signingCredentials: new SigningCredentials(
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key)),

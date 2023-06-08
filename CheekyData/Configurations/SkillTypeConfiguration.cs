@@ -8,10 +8,16 @@ public class SkillTypeConfiguration : IEntityTypeConfiguration<SkillType>
 {
     public void Configure(EntityTypeBuilder<SkillType> builder)
     {
-        builder.HasKey(st => st.SkillTypeId);
-        builder.Property(st => st.Description).HasMaxLength(255).IsRequired();
-        builder.Property(st => st.Rating).IsRequired();
+        builder.HasKey(s => s.SkillTypeId);
+        builder.Property(p => p.SkillTypeId).ValueGeneratedOnAdd();
+        builder.Property(p => p.Name).HasMaxLength(512);
+        builder.ToTable("SkillType").HasData(InitialSkillTypes());
+    }
 
-        builder.ToTable("SkillType");
+    private static IEnumerable<SkillType> InitialSkillTypes()
+    {
+        return new List<SkillType> {
+            new() { SkillTypeId = 1, Name = "Core" },
+            new() { SkillTypeId = 2, Name = "Technical" } };
     }
 }

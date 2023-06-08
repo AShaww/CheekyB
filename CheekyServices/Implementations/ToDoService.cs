@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CheekyData.Interfaces;
-using CheekyData.Models;
+using CheekyModels.Entities;
 using CheekyModels.Dtos;
 using CheekyServices.Constants;
 using CheekyServices.Exceptions;
@@ -21,6 +21,12 @@ public class ToDoService : IToDoService
         _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
     }
 
+    public async Task<IEnumerable<ToDoDto>> GetAllToDos()
+    {
+        var users = await _toDoRepository.GetAllToDoAsync();
+        return _mapper.Map<IEnumerable<ToDoDto>>(users);
+    }
+    
     public async Task<IEnumerable<ToDoDto>> GetTodoByUserId(Guid toDoId)
     {
         var response = await _toDoRepository.GetAllAsync(a => a.ToDoId == toDoId);
@@ -34,12 +40,6 @@ public class ToDoService : IToDoService
         //var user = await _userRepository.GetFirstOrDefault(a => a.UserId == userId);
 
         return _mapper.Map<IEnumerable<ToDoDto>>(response);
-    }
-
-    public async Task<IEnumerable<ToDoDto>> GetAllToDos()
-    {
-        var users = await _toDoRepository.GetAllToDoAsync();
-        return _mapper.Map<IEnumerable<ToDoDto>>(users);
     }
 
     public async Task<ToDoDto> InsertTodo(ToDoDto todo)

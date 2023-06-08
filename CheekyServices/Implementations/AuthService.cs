@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
 using CheekyModels.Dtos;
 using CheekyServices.Configuration;
 using CheekyServices.Interfaces;
@@ -21,7 +22,8 @@ namespace CheekyServices.Implementations;
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-
+        
+        
         #region Login
         /// <inheritdoc/>
         public async Task<string> Login(string googleToken)
@@ -35,6 +37,13 @@ namespace CheekyServices.Implementations;
 
                 var jwtToken = _userJwtGenerator.GenerateToken(userDto);
 
+                // check if the token is expired
+                if (_userJwtGenerator.IsTokenExpired(jwtToken))
+                {
+                    // handle expired token
+                    throw new Exception("Token is expired.");
+                }
+                
                 return jwtToken;
             }
             catch (Exception e)

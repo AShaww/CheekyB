@@ -1,4 +1,4 @@
-﻿namespace CheekyData.Models;
+﻿namespace CheekyModels.Entities;
 
 public class ToDo
 {

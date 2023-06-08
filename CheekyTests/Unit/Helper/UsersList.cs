@@ -1,4 +1,4 @@
-﻿using CheekyData.Models;
+﻿using CheekyModels.Entities;
 using CheekyModels.Dtos;
 
 namespace CheekyTests.Unit.Helper;

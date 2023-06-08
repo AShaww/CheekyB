@@ -22,5 +22,22 @@ public static class AuthEndpoints
             .Produces<string>()
             .Produces(StatusCodes.Status400BadRequest)
             .Produces(StatusCodes.Status500InternalServerError);
+        
+        // app.MapPost("/api/logout", async (IAuthService authService, HttpContext context) =>
+        //     {
+        //         var refreshToken = context.Request.Headers["refresh-token"];
+        //         var result = await authService.Logout(refreshToken.ToString());
+        //
+        //         if (result)
+        //         {
+        //             return Results.Ok();
+        //         }
+        //
+        //         return Results.Problem("Invalid token");
+        //     })
+        //     .WithName(AuthEndpointConstants.LogoutWithName)
+        //     .Produces(StatusCodes.Status200OK)
+        //     .Produces(StatusCodes.Status500InternalServerError);
+
     }
 }

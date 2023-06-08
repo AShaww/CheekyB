@@ -1,7 +1,8 @@
-﻿using AutoMapper;
+﻿using System.Security.Cryptography;
+using AutoMapper;
 using CheekyData.Interfaces;
-using CheekyData.Models;
 using CheekyModels.Dtos;
+using CheekyModels.Entities;
 using CheekyServices.Constants;
 using CheekyServices.Exceptions;
 using CheekyServices.Interfaces;
@@ -31,7 +32,7 @@ public class UserService : IUserService
     #endregion
 
     #region GetUserById
-
+ 
     /// <inheritdoc/>
     public async Task<UserDto> GetUserById(Guid userId)
     {
@@ -97,7 +98,7 @@ public class UserService : IUserService
     }
 
     #endregion
-
+    
     #region SoftDeleteUser
 
     /// <inheritdoc/>
@@ -130,9 +131,6 @@ public class UserService : IUserService
 
     #endregion
 
-    #region LoginByGoogleUser
-
-    /// <inheritdoc/>
     public async Task<UserDto> LoginByGoogleUser(GoogleUserDto googleUser)
     {
         var user = await _userRepository.GetFirstOrDefault(x => x.Email == googleUser.Email);
@@ -142,7 +140,6 @@ public class UserService : IUserService
             userToInsert.LoginDate = DateTime.UtcNow;
             return await InsertUser(userToInsert);
         }
-
         user.LoginDate = DateTime.UtcNow;
         user.GoogleUserId = googleUser.GoogleUserId;
 
@@ -150,6 +147,4 @@ public class UserService : IUserService
 
         return _mapper.Map<UserDto>(user);
     }
-
-    #endregion
 }

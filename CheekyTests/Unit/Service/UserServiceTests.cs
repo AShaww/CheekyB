@@ -1,7 +1,7 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
 using CheekyData.Interfaces;
-using CheekyData.Models;
+using CheekyModels.Entities;
 using CheekyModels.Dtos;
 using CheekyServices.Exceptions;
 using CheekyServices.Implementations;

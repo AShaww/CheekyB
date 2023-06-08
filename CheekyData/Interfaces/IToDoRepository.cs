@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using CheekyData.Models;
+using CheekyModels.Entities;
 
 namespace CheekyData.Interfaces;
 

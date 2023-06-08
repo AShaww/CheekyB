@@ -13,4 +13,6 @@ public class UserDto
     public DateTime ModifiedOn { get; set; }
     public DateTime? ArchivedOn { get; set; }
     public string? GoogleUserId { get; set; }
+    public string RefreshToken { get; set; }
+    public DateTime RefreshTokenExpiryTime { get; set; }
 }

@@ -3,6 +3,7 @@ using CheekyB.Common;
 using CheekyB.Constants.EndpointConstants;
 using CheekyModels.Dtos;
 using CheekyServices.Exceptions;
+using CheekyServices.Exceptions.ScrapedNewsExceptions;
 using CheekyServices.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

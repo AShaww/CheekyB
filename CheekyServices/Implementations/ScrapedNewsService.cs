@@ -2,7 +2,9 @@
 using CheekyData.Interfaces;
 using CheekyModels.Dtos;
 using CheekyServices.Constants;
+using CheekyServices.Constants.ExceptionMessageConstants;
 using CheekyServices.Exceptions;
+using CheekyServices.Exceptions.ScrapedNewsExceptions;
 using CheekyServices.Interfaces;
 
 namespace CheekyServices.Implementations;

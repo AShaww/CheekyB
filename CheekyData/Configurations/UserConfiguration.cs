@@ -13,17 +13,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(p => p.GoogleUserId).HasMaxLength(255);
         builder.Property(p => p.UserId).ValueGeneratedOnAdd();
         builder.Property(p => p.FirstName).HasMaxLength(50).IsRequired();
-        builder.Property(p => p.LastName).HasMaxLength(100).IsRequired();
+        builder.Property(p => p.Surname).HasMaxLength(100).IsRequired();
         builder.Property(p => p.Email).HasMaxLength(100).IsRequired();
         builder.HasIndex(u => u.Email).IsUnique();
         builder.Property(p => p.Archived).HasDefaultValue(false);
         builder.Property(p => p.CreatedOn).HasDefaultValueSql("getutcdate()");
         builder.Property(p => p.ModifiedOn).HasDefaultValueSql("getutcdate()");
-        
-        builder.HasMany(u => u.TrainedSkills)
-                    .WithOne(ts => ts.User)
-                    .HasForeignKey(ts => ts.UserId);
-        
         builder.ToTable("User").HasData(UserSeed());
     }
     
@@ -35,7 +30,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             {
                 UserId =  Guid.Parse("830e9471-9d6e-4557-8bf5-ec89d375d933"),
                 FirstName = "Amir",
-                LastName = "Shaw",
+                Surname = "Shaw",
                 Email = "AmirShaw@hotmail.co.uk",
                 Archived = false
             }

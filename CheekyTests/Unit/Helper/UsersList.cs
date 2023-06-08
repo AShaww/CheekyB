@@ -12,7 +12,7 @@ namespace CheekyTests.Unit.Helper;
             {
                 UserId = Guid.Parse("C6D48587-6F80-4B97-B7AC-7B73A3956EF1"),
                 FirstName = "Test User 1",
-                LastName = "Surname Test 1",
+                Surname = "Surname Test 1",
                 Email = "test@gmail.com",
                 Archived = false,
                 LoginDate = null
@@ -21,7 +21,7 @@ namespace CheekyTests.Unit.Helper;
             {
                 UserId = Guid.Parse("558A04F9-930F-4B1B-90E2-3F5650D79704"),
                 FirstName = "Test User 2",
-                LastName = "Surname Test 2",
+                Surname = "Surname Test 2",
                 Email = "test2@gmail.com",
                 Archived = false,
                 LoginDate = default

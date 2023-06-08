@@ -1,4 +1,5 @@
-﻿namespace CheekyB.Metadata;
+﻿using System;
+namespace CheekyB.Metadata;
 
 public class RuleSetMetadata
 {

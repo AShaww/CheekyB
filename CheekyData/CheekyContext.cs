@@ -10,12 +10,16 @@ public class CheekyContext : DbContext
     { }
         
     public DbSet<User> Users { get; set; }
+    
+    public DbSet<SkillType> SkillTypes { get; set; }
+
+    public DbSet<Skill> Skills { get; set; }
+
+    public DbSet<Rating> Ratings { get; set; }
+    public DbSet<UserSkill> UserSkills { get; set; }
     public DbSet<ToDo> ToDos { get; set; }
     public DbSet<ScrapedNews> ScrapedNews { get; set; }
     
-    public DbSet<CoreSkill> CoreSkills { get; set; }
-    public DbSet<TrainedSkill> TrainedSkills { get; set; }
-    public DbSet<SkillType> SkillTypes { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

@@ -151,29 +151,25 @@ app.UseHttpsRedirection();
 
 app.UseRouting();
 
+app.MapGroup("api/skill")
+    .MapSkillEndpoints()
+    .WithTags("Skill");
+
 app.MapGroup("api/User")
     .MapUserEndpoints()
     .WithTags("User");
 
-app.MapGroup("api/ToDo")
-    .MapToDoEndpoints()
-    .WithTags("ToDo");
+app.MapGroup("api/UserSkill")
+    .MapUserSkillEndpoints()
+    .WithTags("UserSkill");
 
-app.MapGroup("api/ScrapedNews")
-    .MapScrapedNewsEndpoints()
-    .WithTags("ScrapedNews");
-
-app.MapGroup("api/CoreSkill")
-    .MapCoreSkillEndpoints()
-    .WithTags("Core Skill");
-
-app.MapGroup("api/TrainedSkill")
-    .MapTrainedSkillEndpoints()
-    .WithTags("Trained Skill");
-
-app.MapGroup("api/SkillType")
-    .MapSkillTypeEndpoints()
-    .WithTags("Skill Type");
+// app.MapGroup("api/ToDo")
+//     .MapToDoEndpoints()
+//     .WithTags("ToDo");
+//
+// app.MapGroup("api/ScrapedNews")
+//     .MapScrapedNewsEndpoints()
+//     .WithTags("ScrapedNews");
 
 app.UseAuthentication();
 app.UseAuthorization();

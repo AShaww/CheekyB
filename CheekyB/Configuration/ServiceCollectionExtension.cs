@@ -1,9 +1,9 @@
 ﻿using CheekyData.Implementations;
 using CheekyData.Interfaces;
-using CheekyServices.Configuration;
 using CheekyServices.Implementations;
 using CheekyServices.Interfaces;
 using CheekyServices.Utilities;
+using NavyPottleData.Implementation;
 
 namespace CheekyB.Configuration;
 
@@ -13,7 +13,11 @@ public static class ServiceCollectionExtension
     {
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ISkillRepository, SkillRepository>();
+        services.AddScoped<IUserSkillRepository, UserSkillRepository>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<ISkillService, SkillService>();
+        services.AddScoped<IUserSkillService, UserSkillService>();
         services.AddScoped<IToDoRepository, ToDoRepository>();
         services.AddScoped<IToDoService, ToDoService>();
         services.AddScoped<IScrapedNewsRepository, ScrapedNewsRepository>();

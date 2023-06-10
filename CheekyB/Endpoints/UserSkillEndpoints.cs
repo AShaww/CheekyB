@@ -1,5 +1,4 @@
-﻿
-using CheekyB.Common;
+﻿using CheekyB.Common;
 using CheekyB.Constants.EndpointConstants;
 using CheekyB.Filters;
 using CheekyB.Metadata;
@@ -68,25 +67,12 @@ public static class UserSkillEndpoints
         return group;
     }
 
-    /// <summary>
-    /// Calls the UserSkill Service and returns a list of User names and Skills or returns an error 
-    /// </summary>
-    /// <param name="userSkillService"></param>
-    /// <param name="filter"></param>
-    /// <returns>List of UserSkills</returns>
     internal static async Task<IResult> GetAllUserSkills(IUserSkillService userSkillService, [AsParameters] UserSkillFilterDto filter)
     {
         var userSkills = await userSkillService.GetAllUserSkills(filter.PageNumber, filter.PageSize,filter.SkillNames);
 
         return Results.Ok(userSkills);
     }
-
-    /// <summary>
-    /// Calls the UserSkill Service and returns a list of all UserSkills by UserId or returns an error 
-    /// </summary>
-    /// <param name="userSkillService"></param>
-    /// <param name="userId"></param>
-    /// <returns>List of UserSkills</returns>
     internal static async Task<IResult> GetAllUserSkillsByUserId(IUserSkillService userSkillService, Guid userId)
     {
         try
@@ -101,13 +87,6 @@ public static class UserSkillEndpoints
         }
     }
 
-    /// <summary>
-    /// Calls the UserSkill Service and returns a list of all UserSkills by UserId and SkillTypeId or returns an error 
-    /// </summary>
-    /// <param name="userSkillService"></param>
-    /// <param name="userId"></param>
-    /// <param name="skillTypeId"></param>
-    /// <returns>UserSkill</returns>
     internal static async Task<IResult> GetAllUserSkillsByUserIdAndSkillTypeId(IUserSkillService userSkillService, Guid userId, int skillTypeId)
     {
         try
@@ -122,14 +101,6 @@ public static class UserSkillEndpoints
             return CommonMethods.ErrorResponseSelector(ex, ex.Message);
         }
     }
-
-    /// <summary>
-    /// Calls the UserSkill Service and inserts a UserSkill or returns an error 
-    /// </summary>
-    /// <param name="context"></param>
-    /// <param name="userSkillService"></param>
-    /// <param name="userSkillToAdd"></param>
-    /// <returns>UserSkill</returns>
     internal static async Task<IResult> InsertUserSkill(HttpContext context, [FromServices] IUserSkillService userSkillService,
     [FromBody] UserSkillModificationDto userSkillToAdd)
     {
@@ -160,13 +131,6 @@ public static class UserSkillEndpoints
         }
 
     }
-
-    /// <summary>
-    /// Calls the UserSkill Service and updates a UserSkill based on a UserSkillId or returns an error 
-    /// </summary>
-    /// <param name="userSkillService"></param>
-    /// <param name="userSkillToUpdate"></param>
-    /// <returns>Updated UserSkill</returns>
     internal static async Task<IResult> UpdateUserSkill([FromServices] IUserSkillService userSkillService,
     [FromBody] UserSkillModificationDto userSkillToUpdate)
     {
@@ -192,13 +156,6 @@ public static class UserSkillEndpoints
         }
     }
 
-    /// <summary>
-    /// Calls the UserSkill Service and deletes a UserSkill based on a UserSkillId or returns an error 
-    /// </summary>
-    /// <param name="userSkillService"></param>
-    /// <param name="userId"></param>
-    /// <param name="skillId"></param>
-    /// <returns>Deleted UserSkill</returns>
     internal static async Task<IResult> DeleteUserSkill([FromServices] IUserSkillService userSkillService, Guid userId, Guid skillId)
     {
         try

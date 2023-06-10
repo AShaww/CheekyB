@@ -37,8 +37,8 @@ public class UserSkillService : IUserSkillService
     {
         var userSkills = await _userSkillRepository.GetAllAsync(x => x.UserId == userId);
         return _mapper.Map<IEnumerable<UserSkillDto>>(userSkills);
-
     }
+    
     #endregion
 
     #region GetAllUserSkillsByUserIdAndSkillTypeId

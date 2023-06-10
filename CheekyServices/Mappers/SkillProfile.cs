@@ -1,13 +1,9 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using CheekyModels.Dtos;
 using CheekyModels.Entities;
 
 namespace CheekyServices.Mappers;
 
-/// <summary>
-/// Mapper for dealing with Skill data entry 
-/// </summary>
 public class SkillProfile : Profile
 {
     public SkillProfile()

@@ -14,7 +14,7 @@ public class UserProfile : Profile
         CreateMap<GoogleUserDto, UserDto>()
             .ForMember(x => x.FirstName, opt =>
                 opt.MapFrom(x => x.GivenName))
-            .ForMember(x => x.LastName, opt =>
+            .ForMember(x => x.Surname, opt =>
                 opt.MapFrom(x => x.FamilyName));
         
         CreateMap<GoogleJsonWebSignature.Payload, GoogleUserDto>()

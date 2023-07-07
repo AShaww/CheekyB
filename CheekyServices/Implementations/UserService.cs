@@ -12,7 +12,14 @@ public class UserService : IUserService
 {
     private readonly IMapper _mapper;
     private readonly IUserRepository _userRepository;
+    private readonly IUserPortfolioService _userPortfolioService;
 
+    public UserService(IUserRepository userRepository, IMapper mapper,  IUserPortfolioService userPortfolioService)
+    {
+        _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+        _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+        _userPortfolioService = userPortfolioService ?? throw new ArgumentNullException(nameof(userPortfolioService));
+    }
     public UserService(IUserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
@@ -52,7 +59,7 @@ public class UserService : IUserService
     public async Task<UserDto> InsertUser(UserDto user)
     {
         ArgumentException.ThrowIfNullOrEmpty(user.FirstName);
-        ArgumentException.ThrowIfNullOrEmpty(user.LastName);
+        ArgumentException.ThrowIfNullOrEmpty(user.Surname);
         ArgumentException.ThrowIfNullOrEmpty(user.Email);
         //does user already exist
         if (await _userRepository.DoesExistInDb(x => x.Email == user.Email))
@@ -64,9 +71,29 @@ public class UserService : IUserService
         userToAdd.CreatedOn = DateTime.UtcNow;
         userToAdd.ModifiedOn = DateTime.UtcNow;
         userToAdd.LoginDate = user.LoginDate ?? default;
+        
         var addedUser = await _userRepository.AddAsync(userToAdd);
+        
         user = _mapper.Map<UserDto>(addedUser);
         user.UserId = userToAdd.UserId;
+        
+        var userPortfolioDto = new UserPortfolioDto
+        {
+            UserPortfolioId = Guid.NewGuid(),
+            UserId = user.UserId,
+            FullName = user.FirstName + " " + user.Surname,
+            FirstName = user.FirstName,
+            Surname = user.Surname,
+            Email = user.Email,
+            DateJoined = DateTime.UtcNow,
+            IntroductionMessage = "",
+            CV = "",
+            Capacity = 40,
+            JobTitle = ""
+        };
+
+        await _userPortfolioService.InsertUserPortfolio(userPortfolioDto);
+        
         return user;
     }
 
@@ -78,7 +105,7 @@ public class UserService : IUserService
     public async Task<UserDto> UpdateUser(UserDto user)
     {
         ArgumentException.ThrowIfNullOrEmpty(user.FirstName);
-        ArgumentException.ThrowIfNullOrEmpty(user.LastName);
+        ArgumentException.ThrowIfNullOrEmpty(user.Surname);
         ArgumentException.ThrowIfNullOrEmpty(user.Email);
 
         var userToUpdate = await _userRepository.GetFirstOrDefault(a => a.UserId == user.UserId);
@@ -133,12 +160,15 @@ public class UserService : IUserService
     public async Task<UserDto> LoginByGoogleUser(GoogleUserDto googleUser)
     {
         var user = await _userRepository.GetFirstOrDefault(x => x.Email == googleUser.Email);
+        
         if (user == null)
         {
             var userToInsert = _mapper.Map<UserDto>(googleUser);
             userToInsert.LoginDate = DateTime.UtcNow;
-            return await InsertUser(userToInsert);
+            var insertedUser = await InsertUser(userToInsert);
+            return insertedUser;
         }
+        
         user.LoginDate = DateTime.UtcNow;
         user.GoogleUserId = googleUser.GoogleUserId;
 

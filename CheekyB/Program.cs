@@ -103,6 +103,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDomainServices();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddValidatorsFromAssemblyContaining<UserPortfolioValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UserSkillValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<SkillValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<ToDoValidator>();
 builder.Services.ConfigOptions(builder.Configuration);
 builder.Services.AddCors();
@@ -163,6 +166,9 @@ app.MapGroup("api/UserSkill")
     .MapUserSkillEndpoints()
     .WithTags("UserSkill");
     
+app.MapGroup("api/Portfolio")
+    .MapUserPortfolioEndpoints()
+    .WithTags("Portfolio");
 
 // app.MapGroup("api/ToDo")
 //     .MapToDoEndpoints()

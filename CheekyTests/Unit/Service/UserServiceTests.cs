@@ -1,10 +1,13 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
+using System.Net;
 using AutoMapper;
 using CheekyData.Interfaces;
-using CheekyModels.Entities;
 using CheekyModels.Dtos;
+using CheekyModels.Entities;
 using CheekyServices.Exceptions;
 using CheekyServices.Implementations;
+using CheekyServices.Interfaces;
 using CheekyServices.Mappers;
 using CheekyTests.Unit.Helper;
 using Moq;
@@ -18,7 +21,9 @@ public class UserServiceTests
     private readonly IMapper _mapperMock;
     private readonly Mock<IUserRepository> _userRepositoryMock;
     private UserService _userService;
+    private readonly Mock<IUserPortfolioService> _userPortfolioServiceMock;
 
+    
     //reuseable setup bits and pieces for the mock. Generally for the positive test cases. Custom test mocking goes into the tests directly.
     public UserServiceTests()
     {
@@ -32,52 +37,54 @@ public class UserServiceTests
         // Setup User Repository mock
         _userRepositoryMock = new Mock<IUserRepository>();
         _userRepositoryMock.Setup(s => s.GetAllAsync(x => !x.Archived)).ReturnsAsync(entities);
-        _userRepositoryMock.Setup(s => s.GetAllUsersAsync(x => !x.Archived, 1, 10)).ReturnsAsync(entities);
+        _userRepositoryMock.Setup(a => a.GetAllUsersAsync(x => !x.Archived, 1, 10));
         _userRepositoryMock.Setup(s => s.DoesExistInDb(It.IsAny<Expression<Func<User, bool>>>())).ReturnsAsync(false);
         _userRepositoryMock.Setup(s => s.AddAsync(It.IsAny<User>())).ReturnsAsync(entities[0]);
         _userRepositoryMock.Setup(s => s.UpdateAsync(It.IsAny<User>())).ReturnsAsync(entities[0]);
-        _userRepositoryMock.Setup(s => s.GetNotLoggedUsersAsync(It.IsAny<Expression<Func<User, bool>>>()))
-            .ReturnsAsync(entities);
-        _userRepositoryMock.Setup(s => s.GetFirstOrDefault(It.IsAny<Expression<Func<User, bool>>>()))
-            .ReturnsAsync(UsersList.GetUsersList()[0]);
+        _userRepositoryMock.Setup(s => s.GetNotLoggedUsersAsync(It.IsAny<Expression<Func<User, bool>>>())).ReturnsAsync(entities);
+        _userRepositoryMock.Setup(s => s.GetFirstOrDefault(It.IsAny<Expression<Func<User, bool>>>())).ReturnsAsync(UsersList.GetUsersList()[0]);
 
+        // Setup UserPortfolioService mock
+        _userPortfolioServiceMock = new Mock<IUserPortfolioService>();
+        
         // Set User Service
         _userService = new UserService(_userRepositoryMock.Object, _mapperMock);
     }
 
-    #region GetAllUsers cases
+    #region GetAllAsync cases
 
     // Positive use case
     [Fact]
-    public async Task GetAllUsers_ReturnsListOfUsers()
+    public async Task GetAllAsync_ReturnsListOfUsers()
     {
         // Arrange, Act
-        var result = await _userService.GetAllUsers(1, 10);
 
+        var result = await _userService.GetAllUsers(1, 10);
+        
         //Assert
-        Assert.NotNull(result);
-        Assert.True(result.Any());
+       Assert.NotNull(result);
+       Assert.True(result.Any());
     }
 
     // Negative use case - return null from repository
     [Fact]
-    public async Task GetAllUsers_WhenPassedNullArgument_ThrowsNullReferenceException()
+    public async Task GetAllAsync_ReturnsNullReferenceException()
     {
         //Arrange
-        _userRepositoryMock.Setup(s => s.GetAllUsersAsync(x => !x.Archived, 1, 10)).Returns<IRepository<UserDto>>(null);
+        _userRepositoryMock.Setup(s => s.GetAllAsync(x => !x.Archived)).Returns<IRepository<UserDto>>(null);
+        
         _userService = new UserService(_userRepositoryMock.Object, _mapperMock);
 
         // Act, Assert
-
         await Assert.ThrowsAsync<NullReferenceException>(async () => await _userService.GetAllUsers(1, 10));
     }
 
     // Use case with exception
     [Fact]
-    public async Task GetAllUsers_WhenPassedIndexOutOfRangeItem_ThrowsOutOfRangeException()
+    public async Task GetAllAsync_ThrowsOutOfRangeException()
     {
         //Act Assert
-        Assert.Throws<ArgumentOutOfRangeException>(() => _userService.GetAllUsers(1, 10).Result.ToList()[2]);
+        Assert.Throws<ArgumentOutOfRangeException>(() => _userService.GetAllUsers(1,10).Result.ToList()[2]);
     }
 
     #endregion
@@ -86,7 +93,7 @@ public class UserServiceTests
 
     // Positive use case
     [Fact]
-    public async Task GetUserById_WhenPassedValidUserId_ReturnsValidUser()
+    public async Task GetUserById_Returns_ValidUser()
     {
         // Arrange, Act
         _userRepositoryMock.Setup(s => s.DoesExistInDb(It.IsAny<Expression<Func<User, bool>>>())).ReturnsAsync(true);
@@ -105,20 +112,20 @@ public class UserServiceTests
 
     // Negative use case
     [Fact]
-    public async Task GetUserById_WhenUserConflictExceptionIsTriggeredInRepository_ThrowsUserNotFoundException()
+    public async Task GetUserById_Returns_Not_Found_Message()
     {
-        // Arrange
+        // Arrange, Act
+
+        // Set User Service
+        _userService = new UserService(_userRepositoryMock.Object, _mapperMock);
+
         var user = _mapperMock.Map<UserDto>(UsersList.GetUsersList()[0]);
-        _userRepositoryMock.Setup(s => s.GetFirstOrDefault(It.IsAny<Expression<Func<User, bool>>>()))
-            .ThrowsAsync(new CheekyExceptions<UserNotFoundException>());
 
-        // Act
-        var exception =
-            await Assert.ThrowsAsync<CheekyExceptions<UserNotFoundException>>(() =>
-                _userService.GetUserById(user.UserId));
+        //Assert
 
-        // Assert
-        Assert.IsType<CheekyExceptions<UserNotFoundException>>(exception);
+        var exception = await Assert.ThrowsAsync<CheekyExceptions<UserNotFoundException>>(() => _userService.GetUserById(user.UserId));
+
+        Assert.Equal("The user with the specified ID does not exist.", exception.Message);
     }
 
     #endregion
@@ -127,7 +134,7 @@ public class UserServiceTests
 
     // Positive use case
     [Fact]
-    public async Task InsertUser_WhenPassedValidUser_ReturnsValidAddedUser()
+    public async Task AddAsync_ReturnsValidUserDtoObject()
     {
         // Arrange
         var user = _mapperMock.Map<UserDto>(UsersList.GetUsersList()[0]);
@@ -143,7 +150,7 @@ public class UserServiceTests
 
     // Negative use case 
     [Fact]
-    public async Task InsertUser_WhenExceptionIsThrown_ThrowsInternalServerErrorException()
+    public async Task AddAsync_ReturnsInternalServerError()
     {
         // Arrange/Act
         var user = _mapperMock.Map<UserDto>(UsersList.GetUsersList()[0]);
@@ -155,11 +162,9 @@ public class UserServiceTests
         var exception = await Assert.ThrowsAsync<CheekyExceptions<Exception>>(() => _userService.InsertUser(user));
         Assert.IsType<CheekyExceptions<Exception>>(exception);
     }
-
-
-
+    
     [Fact]
-    public async Task InsertAsync_WhenUserConflictExceptionIsTriggeredInRepository_ThrowsUserConflictException()
+    public async Task InsertAsync_Returns_Conflict_Message()
     {
         var user = _mapperMock.Map<UserDto>(UsersList.GetUsersList()[0]);
         _userRepositoryMock.Setup(s => s.DoesExistInDb(It.IsAny<Expression<Func<User, bool>>>())).ReturnsAsync(true);
@@ -167,24 +172,22 @@ public class UserServiceTests
         _userService = new UserService(_userRepositoryMock.Object, _mapperMock);
         // Act
 
-        var exception =
-            await Assert.ThrowsAsync<CheekyExceptions<UserConflictException>>(() => _userService.InsertUser(user));
+        var exception = await Assert.ThrowsAsync<CheekyExceptions<UserConflictException>>(() => _userService.InsertUser(user));
         // Assert
         Assert.Equal("The user with the specified email already exists.", exception.Message);
     }
 
     #endregion
 
-    #region UpdateUser cases
+    #region UpdateAsync cases
 
     // Positive use case
     [Fact]
-    public async Task UpdateUser_WhenPassedValidUser_ReturnsValidUpdatedUser()
+    public async Task UpdateAsync_Returns_ValidUserDtoObject()
     {
         // Arrange
         var user = _mapperMock.Map<UserDto>(UsersList.GetUsersList()[0]);
-        _userRepositoryMock.Setup(s => s.DoesExistInDb(It.IsAny<Expression<Func<User, bool>>>()))
-            .Returns(Task.FromResult(true));
+        _userRepositoryMock.Setup(s => s.DoesExistInDb(It.IsAny<Expression<Func<User, bool>>>())).Returns(Task.FromResult(true));
         _userService = new UserService(_userRepositoryMock.Object, _mapperMock);
 
         // Act
@@ -197,30 +200,25 @@ public class UserServiceTests
 
     // Negative use case
     [Fact]
-    public async Task UpdateUser_WhenUserNotFoundExceptionIsTriggeredInRepository_ThrowsSkillNotFoundException()
+    public async Task UpdateAsync_Returns_NotFound_Message()
     {
-        // Arrange
         var user = _mapperMock.Map<UserDto>(UsersList.GetUsersList()[0]);
-        _userRepositoryMock.Setup(s => s.GetFirstOrDefault(It.IsAny<Expression<Func<User, bool>>>()))
-            .ThrowsAsync(new CheekyExceptions<UserNotFoundException>());
 
+        _userService = new UserService(_userRepositoryMock.Object, _mapperMock);
         // Act
-        var exception =
-            await Assert.ThrowsAsync<CheekyExceptions<UserNotFoundException>>(() => _userService.UpdateUser(user));
+        var exception = await Assert.ThrowsAsync<CheekyExceptions<UserNotFoundException>>(() => _userService.UpdateUser(user));
 
         // Assert
-        Assert.IsType<CheekyExceptions<UserNotFoundException>>(exception);
+        Assert.Equal("The user with the specified ID does not exist.", exception.Message);
     }
 
     [Fact]
-    public async Task UpdateUser_WhenExceptionIsTriggeredInRepository_ThrowsInternalServerError()
+    public async Task UpdateAsync_ReturnsInternalServerError()
     {
         // Arrange
         var user = _mapperMock.Map<UserDto>(UsersList.GetUsersList()[0]);
-        _userRepositoryMock.Setup(s => s.DoesExistInDb(It.IsAny<Expression<Func<User, bool>>>()))
-            .Returns(Task.FromResult(true));
-        _userRepositoryMock.Setup(s => s.UpdateAsync(It.IsAny<User>()))
-            .ThrowsAsync(new CheekyExceptions<Exception>());
+        _userRepositoryMock.Setup(s => s.DoesExistInDb(It.IsAny<Expression<Func<User, bool>>>())).Returns(Task.FromResult(true));
+        _userRepositoryMock.Setup(s => s.UpdateAsync(It.IsAny<User>())).ThrowsAsync(new CheekyExceptions<Exception>());
         _userService = new UserService(_userRepositoryMock.Object, _mapperMock);
 
         // Act
@@ -234,7 +232,7 @@ public class UserServiceTests
 
     // Positive use case
     [Fact]
-    public async Task SoftDeleteUser_WhenPassedValidUserId_ThrowsValidDeletedSkill()
+    public async Task DeleteAsync_Returns_ValidUserDtoObject()
     {
         // Arrange
         var user = _mapperMock.Map<UserDto>(UsersList.GetUsersList()[0]);
@@ -251,22 +249,33 @@ public class UserServiceTests
 
     // Negative use case 
 
-
     [Fact]
-    public async Task SoftDeleteUser_WhenSkillNotFoundExceptionIsTriggeredInRepository_ThrowsUserNotFoundException()
+    public async Task SoftDeleteAsync_Returns_NotFound_Message()
     {
-        // Arrange
         var user = _mapperMock.Map<UserDto>(UsersList.GetUsersList()[0]);
-        _userRepositoryMock.Setup(s => s.GetFirstOrDefault(It.IsAny<Expression<Func<User, bool>>>()))
-            .ThrowsAsync(new CheekyExceptions<UserNotFoundException>());
 
+        _userService = new UserService(_userRepositoryMock.Object, _mapperMock);
         // Act
-        var exception =
-            await Assert.ThrowsAsync<CheekyExceptions<UserNotFoundException>>(() =>
-                _userService.SoftDeleteUser(user.UserId));
+        var exception = await Assert.ThrowsAsync<CheekyExceptions<UserNotFoundException>>(() => _userService.SoftDeleteUser(user.UserId));
 
         // Assert
-        Assert.IsType<CheekyExceptions<UserNotFoundException>>(exception);
+        Assert.Equal("The user with the specified ID does not exist.", exception.Message);
+    }
+
+
+    [Fact]
+    public async Task DeleteAsync_Returns_NotFound_Message()
+    {
+        // Arrange
+        var user = new User();
+
+        // Act, Assert
+        _userRepositoryMock.Setup(s => s.DeleteAsync(user)).Returns<IRepository<UserDto>>(null);
+        _userService = new UserService(_userRepositoryMock.Object, _mapperMock);
+
+        var exception = await Assert.ThrowsAsync<CheekyExceptions<UserNotFoundException>>(() => _userService.SoftDeleteUser(user.UserId));
+
+        Assert.Equal("The user with the specified ID does not exist.", exception.Message);
     }
 
     #endregion
@@ -274,7 +283,7 @@ public class UserServiceTests
     #region GetNeverLoggedUsers cases
 
     [Fact]
-    public async Task GetNeverLoggedUsers_ReturnsValidList()
+    public async Task GetNeverLoggedUsers_Returns_Result()
     {
         // Act
         var result = await _userService.GetNeverLoggedUsers();

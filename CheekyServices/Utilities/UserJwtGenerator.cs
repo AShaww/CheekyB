@@ -26,7 +26,7 @@ public class UserJwtGenerator : IUserJwtGenerator
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, $"{user.FirstName} {user.LastName}"),
+            new Claim(ClaimTypes.NameIdentifier, $"{user.FirstName} {user.Surname}"),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Role, "User")
         };

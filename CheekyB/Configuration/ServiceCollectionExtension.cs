@@ -16,6 +16,8 @@ public static class ServiceCollectionExtension
         services.AddScoped<ISkillRepository, SkillRepository>();
         services.AddScoped<IUserSkillRepository, UserSkillRepository>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IUserPortfolioRepository, UserPortfolioRepository>();
+        services.AddScoped<IUserPortfolioService, UserPortfolioService>();
         services.AddScoped<ISkillService, SkillService>();
         services.AddScoped<IUserSkillService, UserSkillService>();
         services.AddScoped<IToDoRepository, ToDoRepository>();

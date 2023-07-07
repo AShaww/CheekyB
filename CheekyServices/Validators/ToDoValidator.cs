@@ -1,6 +1,5 @@
 ﻿using CheekyModels.Dtos;
 using CheekyServices.Constants;
-using CheekyServices.Constants.ErrorConstants;
 using FluentValidation;
 
 namespace CheekyServices.Validators;

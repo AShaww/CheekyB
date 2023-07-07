@@ -13,7 +13,7 @@ public class User
     public DateTime CreatedOn { get; set; }
     public DateTime ModifiedOn { get; set; }
     public string? GoogleUserId { get; set; }
-    
+    public virtual UserPortfolio UserPortfolio { get; set; }
     public virtual ICollection<UserSkill> UserSkills { get; set; }
     public virtual IEnumerable<ToDo>? ToDos { get; set; }
 }
